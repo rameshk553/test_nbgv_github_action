@@ -1,0 +1,53 @@
+
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT license.
+
+# This continuous integration pipeline is triggered anytime a user pushes code to the repo.
+# This pipeline builds the Wpf project
+name: NET 7.0 CI
+
+# Trigger on every master branch push and pull request
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build:
+  
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        dotnet-version: ['7.0.x']
+
+    env:
+      Solution_Path: dontnet7_wpf_app.sln
+      Actions_Allow_Unsecure_Commands: true # Allows AddPath and SetEnv commands
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+
+    # Use Nerdbank.GitVersioning to set version variables: https://github.com/AArnott/nbgv
+    - name: Use Nerdbank.GitVersioning to set version variables
+      uses: aarnott/nbgv@v0.4.0
+      with:
+        setAllVars: true
+
+    # Install the .NET Core workload
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+
+    - name: Restore Packages
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: print version number
+      run: echo $env:NBGV_Version
