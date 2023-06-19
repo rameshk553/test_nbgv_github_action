@@ -9,8 +9,8 @@ name: NET 7.0 CI
 # Trigger on every master branch push and pull request
 on:
   push:
-    branches:
-      - master
+     branches-ignore:
+      - 'dependabot/**'
 
 jobs:
 
