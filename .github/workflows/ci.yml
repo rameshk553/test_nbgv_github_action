@@ -6,54 +6,6 @@
 # This pipeline builds the Wpf project
 name: NET 7.0 CI
 
-# Trigger on every master branch push and pull request
-on:
-  push:
-     branches-ignore:
-      - 'dependabot/**'
-
-jobs:
-
-  build:
-  
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        dotnet-version: ['7.0.x']
-
-    env:
-      Solution_Path: dontnet7_wpf_app.sln
-      Actions_Allow_Unsecure_Commands: true # Allows AddPath and SetEnv commands
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
-
-    # Use Nerdbank.GitVersioning to set version variables: https://github.com/AArnott/nbgv
-    - name: Use Nerdbank.GitVersioning to set version variables
-      uses: aarnott/nbgv@v0.4.0
-      with:
-        setAllVars: true
-
-    # Install the .NET Core workload
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: ${{ matrix.dotnet-version }}
-
-
-I apologize for the confusion. If your solution file name is indeed "dontnet7_wpf_app.sln," then the Solution_Path environment variable is correctly set in your YAML file.
-
-In that case, the error you are encountering might be due to the incorrect working directory when executing the dotnet restore command. You can try specifying the working directory explicitly to ensure the command runs in the correct location.
-
-Here's an updated version of your YAML file that includes the working directory:
-
-yaml
-Copy code
-name: NET 7.0 CI
-
 on:
   push:
     branches-ignore:
@@ -67,7 +19,7 @@ jobs:
         dotnet-version: ['7.0.x']
 
     env:
-      Solution_Path: dontnet7_wpf_app.sln
+      Solution_Path: dotnet7_wpf_app.sln
       Actions_Allow_Unsecure_Commands: true
 
     steps:
