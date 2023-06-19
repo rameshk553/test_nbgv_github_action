@@ -51,3 +51,4 @@ jobs:
 
     - name: print version number
       run: echo $env:NBGV_Version
+      run: echo $env: NBGV_SimpleVersion
