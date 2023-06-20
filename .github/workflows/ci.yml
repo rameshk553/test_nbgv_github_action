@@ -58,6 +58,7 @@ jobs:
         run: Start-Process ./installer.exe -NoNewWindow -Wait -ArgumentList "/verysilent /allusers"
 
       - name: Build Installer
-        run: "%programfiles(x86)%\Inno Setup 6\iscc.exe" /dMyAppVersion="1.0.0.0" "scripts\InnoSetupScript.iss"
+        run: |
+          "%programfiles(x86)%\Inno Setup 6\iscc.exe" /dMyAppVersion="${{ env.NBGV_Version }}" "scripts\InnoSetupScript.iss"
         shell: cmd
 
