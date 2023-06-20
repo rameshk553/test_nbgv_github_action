@@ -35,18 +35,18 @@ jobs:
         with:
           setAllVars: true
 
-      - name: Install .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+      # - name: Install .NET Core
+      #   uses: actions/setup-dotnet@v2
+      #   with:
+      #     dotnet-version: ${{ matrix.dotnet-version }}
 
-      - name: Restore Packages
-        run: dotnet restore ${{ env.Solution_Path }}
-        working-directory: ${{ github.workspace }}
+      # - name: Restore Packages
+      #   run: dotnet restore ${{ env.Solution_Path }}
+      #   working-directory: ${{ github.workspace }}
 
-      - name: Build
-        run: dotnet build --configuration Release --no-restore ${{ env.Solution_Path }}
-        working-directory: ${{ github.workspace }}
+      # - name: Build
+      #   run: dotnet build --configuration Release --no-restore ${{ env.Solution_Path }}
+      #   working-directory: ${{ github.workspace }}
 
       - name: print version number
         run: echo $env:NBGV_Version
@@ -55,4 +55,9 @@ jobs:
         run: curl -L -o installer.exe http://files.jrsoftware.org/is/6/innosetup-${{ env.INNO_VERSION }}.exe
 
       - name: Install Inno Setup
-        run: Start-Process ./installer.exe -NoNewWindow -Wait -ArgumentList "/verysilent /allusers /dir=inst"
+        run: Start-Process ./installer.exe -NoNewWindow -Wait -ArgumentList "/verysilent /allusers"
+
+      - name: Build Installer
+        run: "%programfiles(x86)%\Inno Setup 6\iscc.exe" /dMyAppVersion="1.0.0.0" "scripts\InnoSetupScript.iss"
+        shell: cmd
+
