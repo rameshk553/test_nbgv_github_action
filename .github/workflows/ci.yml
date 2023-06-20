@@ -22,6 +22,7 @@ jobs:
     env:
       Solution_Path: dotnet7_wpf_app.sln
       Actions_Allow_Unsecure_Commands: true
+      INNO_VERSION: 6.2.2
 
     steps:
       - name: Checkout
@@ -49,3 +50,9 @@ jobs:
 
       - name: print version number
         run: echo $env:NBGV_Version
+        
+      - name: Download Inno Setup installer
+        run: curl -L -o installer.exe http://files.jrsoftware.org/is/6/innosetup-${{ env.INNO_VERSION }}.exe
+
+      - name: Install Inno Setup
+        run: Start-Process ./installer.exe -NoNewWindow -Wait -ArgumentList "/verysilent /allusers /dir=inst"
