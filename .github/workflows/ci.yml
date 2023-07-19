@@ -21,7 +21,7 @@ jobs:
 
     env:
       Solution_Path: dotnet7_wpf_app.sln
-      Actions_Allow_Unsecure_Commands: true
+      
       INNO_VERSION: 6.2.2
 
     steps:
